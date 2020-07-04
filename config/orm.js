@@ -2,24 +2,6 @@ const connection = require("./connection.js");
 const cTable = require("console.table");
 
 let orm = {
-    // select: function(whatToSelect, tableInput) {
-    //   let queryString = "SELECT ?? FROM ??";
-    //   connection.query(queryString, [whatToSelect, tableInput], function(err, result) {
-    //     if (err) throw err;
-    //     console.table(result);
-    //   });
-    // },
-    // selectWhere: function(tableInput, colToSearch, valOfCol) {
-  //     let queryString = "SELECT * FROM ?? WHERE ?? = ?";
-
-  //     console.table(queryString);
-
-  //     connection.query(queryString, [tableInput, colToSearch, valOfCol], function(err, result) {
-  //       if (err) throw err;
-  //       console.table(result);
-  //     });
-
-  // first_name, last_name, title, department, salary, manager
   allJoin: function (req) {
     let queryString = `SELECT 
       e.id,
@@ -34,26 +16,30 @@ let orm = {
       ON e.role_id = r.id
       JOIN departments d
       ON r.department_id = d.id
-      ORDER BY salary
+      ORDER BY salary DESC
       `;
     connection.query(queryString, function (err, result) {
       if (err) throw err;
       console.table(result);
+      start();
     });
     // console.log(connection.query(queryString).sql);
   },
 
-  getTable: function (whatToSelect) {
-    let queryString = `SELECT * FROM ??`;
-    connection.query(queryString,[whatToSelect],function (err, result) {
+  getTable: function (table) {
+    console.log(table);
+    let queryString = `SELECT * FROM ` + table;
+    connection.query(queryString, [table], function (err, result) {
       if (err) throw err;
-      console.log(whatToSelect + `\n------------`);
+      console.log(table + `\n------------`);
       console.table(result);
-    })
+      start();
+    });
   },
 
   selectWhere: function (whatToSelect, tableInput) {
-    let queryString = `SELECT 
+    let queryString =
+      `SELECT 
       e.id,
       e.first_name,
       e.last_name,
@@ -66,45 +52,96 @@ let orm = {
       ON e.role_id = r.id
       JOIN departments d
       ON r.department_id = d.id
-      WHERE e.` + whatToSelect + "=" + tableInput;
+      WHERE e.` +
+      whatToSelect +
+      "=" +
+      tableInput;
     // console.log("queryString" + queryString);
-    connection.query(queryString,[whatToSelect, tableInput],function (err, result) {
+    connection.query(queryString, [whatToSelect, tableInput], function (
+      err,
+      result
+    ) {
       if (err) throw err;
       // console.log(connection.query(queryString).sql);
       console.log(tableInput + `\n------------`);
       console.table(result);
-    })
+      start();
+    });
   },
 
-  addEmployee: function () {
-    let queryString = 
-    "INSERT INTO employees (first_name) VALUES ('firstName')";
+  addEmp: function ([col1, col2, col3], col4) {
+    let queryString =
+      `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('` +
+      col1 +
+      `','` +
+      col2 +
+      `',` +
+      col3 +
+      `,` +
+      col4 +
+      `);`;
     // console.log("queryString" + queryString);
-    connection.query(queryString,function (err, result) {
+    connection.query(queryString, function (err, result) {
+      if (err) throw err;
+      console.table(result);
+      start();
+    });
+  },
+  addDept: function (name) {
+    console.log("orm1");
+    let queryString = `INSERT INTO departments (name) VALUES ('` + name + `');`;
+    // console.log("queryString" + queryString);
+    connection.query(queryString, function (err, result) {
       if (err) throw err;
       // console.log(connection.query(queryString).sql);
-      // console.log(firstName, lastName, role, manager + `\n------------`);
+      // console.log(col1, col2, col3, col4 + `\n------------`);
       console.table(result);
-    })
+      start();
+    });
   },
-  // updateEmployee: function(table, objColVals, condition, cb) {
-  //   var queryString = "UPDATE " + table;
+  addRole: function (col1, col2, col3) {
+    let queryString =
+      `INSERT INTO roles (title, salary, department_id) VALUES ('` +
+      col1 +
+      `',` +
+      col2 +
+      `,` +
+      col3 +
+      `);`;
+    // console.log("queryString" + queryString);
+    connection.query(queryString, function (err, result) {
+      if (err) throw err;
+      // console.log(connection.query(queryString).sql);
+      // console.log(col1, col2, col3, col4 + `\n------------`);
+      console.table(result);
+      start();
+    });
+  },
+  updateEmp: function (field, change, id) {
+    var queryString =
+      `UPDATE employees SET ` + field + ` = ` + change + ` WHERE id = ` + id;
 
-  //   queryString += " SET ";
-  //   queryString += objToSql(objColVals);
-  //   queryString += " WHERE ";
-  //   queryString += condition;
+    console.log(queryString);
+    connection.query(queryString, function (err, result) {
+      if (err) {
+        throw err;
+      }
+      console.table(result);
+      start();
+    });
+  },
+  updateRole: function (field, change, id) {
+    var queryString =
+      `UPDATE roles SET ` + field + ` = ` + change + ` WHERE id = ` + id;
 
-  //   console.log(queryString);
-  //   connection.query(queryString, function(err, result) {
-  //     if (err) {
-  //       throw err;
-  //     }
-
-  //     cb(result);
-  //   });
-  // }
-
-
+    console.log(queryString);
+    connection.query(queryString, function (err, result) {
+      if (err) {
+        throw err;
+      }
+      console.table(result);
+      start();
+    });
+  },
 };
 module.exports = orm;
