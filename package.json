@@ -1,0 +1,27 @@
+{
+  "name": "employee_management_app",
+  "version": "1.0.0",
+  "description": "An app that helps to manage employees and salaries.",
+  "main": "server.js",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "watch": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ashaw916/employee_management_app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ashaw916/employee_management_app/issues"
+  },
+  "homepage": "https://github.com/Ashaw916/employee_management_app#readme"
+}
